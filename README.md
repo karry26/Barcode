@@ -1,1 +1,3 @@
 # Barcode
+
+Scan it now.
