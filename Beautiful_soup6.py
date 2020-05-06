@@ -14,7 +14,7 @@ import csv
 from bs4 import BeautifulSoup
 
 header={'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15'}
-qrcode='4005808725298'
+qrcode='9788126598328'
 page = requests.get('https://www.amazon.in/s?k='+qrcode,headers=header)
 
 soup = BeautifulSoup(page.text, 'html.parser')

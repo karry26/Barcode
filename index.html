@@ -8,11 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="ZXing for JS">
 
-    <title>ZXing TypeScript | Decoding from image file</title>
+    <title>Just Scan</title>
 
     <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
     <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://unpkg.com/normalize.css@8.0.0/normalize.css">
     <link rel="preload" as="style" onload="this.rel='stylesheet';this.onload=null" href="https://unpkg.com/milligram@1.3.0/dist/milligram.min.css">
+    <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 
 <body>
@@ -20,22 +21,18 @@
     <main class="wrapper" style="padding-top:2em">
 
         <section class="container" id="demo-content">
-            <h1 class="title">Scan 1D/2D Code from Image</h1>
+            <h1 class="title">Scan 1D/2D Bar Code</h1>
 
             <p>
-                <a class="button-small button-outline" href="../../index.html">HOME 🏡</a>
-            </p>
-
-            <p>
-                This example shows how to scan any supported 1D/2D code with ZXing javascript library from an image.
-                The example decodes from the
-                <code>src</code> in
-                <code>img</code> tag, however is also possible to decode directly from an url without an
-                <code>img</code> tag.
+                <a class="button-small button-outline" href="./index.html">HOME 🏡</a>
             </p>
 
             <div>
                 <a class="button" id="decodeButton">Decode</a>
+            </div>
+
+            <div id="container">
+                <video autoplay="true" id="videoElement"></video>
             </div>
 
             <div>
@@ -84,6 +81,20 @@
             })
 
         })
+    </script>
+
+    <script type="text/javascript">
+        var video = document.querySelector("#videoElement");
+
+        if (navigator.mediaDevices.getUserMedia) {
+          navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (stream) {
+              video.srcObject = stream;
+            })
+            .catch(function (err0r) {
+              console.log("Something went wrong!");
+            });
+        }
     </script>
 
 </body>
