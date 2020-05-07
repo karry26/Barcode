@@ -31,14 +31,16 @@
 
             <div>
                 <a class="button" id="decodeButton">Decode</a>
+                <br><br>
+                <a class="button" id="decodeCamera">Decode from Camera</a>
             </div>
 
-            <div id="camera" style="height:auto;width:auto; text-align:left;"></div>
+            <div id="camera" ></div>
     <input type="button" value="Take a Snap and Download Picture" id="btPic" 
         onclick="takeSnapShot()" />
 
             <div>
-                <img id="img" src="uploads/nivia.jpg" style="border: 1px solid gray" crossorigin="Anonymous"></img>
+                <img id="img" src="uploads/WhatsApp Image 2020-04-30 at 12.24.04 AM.jpeg" style="border: 1px solid gray" crossorigin="Anonymous"></img>
             </div>
 
             <label>Result:</label>
@@ -69,7 +71,7 @@
             const codeReader = new ZXing.BrowserMultiFormatReader()
             console.log('ZXing code reader initialized')
 
-            document.getElementById('decodeButton').addEventListener('click', () => {
+            document.getElementById('decodeCamera').addEventListener('click', () => {
                 var img = Webcam.snap(function (data_uri) {
                 downloadImage('a', data_uri);
             });
@@ -81,6 +83,24 @@
                     document.getElementById('result').textContent = err
                 })
                 console.log(`Started decode for image from ${img.src}`)
+            })
+            document.getElementById('decodeButton').addEventListener('click', () => {
+                var img = document.getElementById('img')
+                img.crossOrigin="Anonumous";
+                codeReader.decodeFromImage(img).then((result) => {
+                    console.log(result)
+                    document.getElementById('result').textContent = result.text
+                }).catch((err) => {
+                    console.error(err)
+                    document.getElementById('result').textContent = err
+                })
+                console.log(`Started decode for image from ${img.src}`)
+            })
+            document.getElementById('decodeButton').addEventListener('click',()=>{
+                window.location="/cheerio.js?qrcode="+ document.getElementById('result').textContent;
+              //  alert( document.getElementById('result').textContent)
+
+
             })
 
         })
