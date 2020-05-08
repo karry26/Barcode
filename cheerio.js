@@ -13,28 +13,42 @@ app.get("/",(req,resp)=>
     var flipkart;
     async function solve ()
         {
+        product={};
         var qrcode=req.query.qrcode;
         amazon=  require("./scrappers/amazon")
         flipkart= require("./scrappers/flipkart")
+        ideakart=require("./scrappers/ideakart")
         amazon=await amazon.fetch(qrcode)
-        console.log("amazon done"); 
+        console.log("amazon done");
+        product.amazon=amazon; 
         //console.log(1)
         flipkart=await flipkart.fetch(qrcode)
-        module.exports.object=amazon;
+        product.flipkart=flipkart;
+        ideakart=await ideakart.fetch(qrcode);
         console.log("flipkart done")
+        product.ideakart=ideakart;
+        module.exports.product=product;
         resp.setHeader("content-type","text/html")
-  
-        resp.write("<table><tr><h3> " +amazon.prodname + "</h3></tr>")
+     //   resp.sendFile("C:/Users/KArry/Desktop/Barcode/public/displayprod.html");
+        //resp.end(JSON.stringify(product));
         
-        resp.write("<tr><h3> " + amazon.link+"</h3> </tr>");
+        resp.write("<table><tr><h5> " +amazon.prodname + "</h5></tr>")
+        
+        resp.write("<tr><h5> " + amazon.link+"</h5> </tr>");
     
-        resp.write("<tr><img src="+amazon.img+ "></tr></table>");
+        resp.write("<tr><img src="+amazon.img+ "></tr>");
         resp.write("<hr><hr>")
-        resp.write("<table><tr><h3> " +flipkart.prodname + "</h3></tr>")
+        resp.write("<table><tr><h5> " +flipkart.prodname + "</h5></tr>")
     
-        resp.write("<tr><h3> " + flipkart.link+"</h3> </tr>");
+        resp.write("<tr><h5> " + flipkart.link+"</h5> </tr>");
     
-        resp.write("<tr><img src="+flipkart.img+ "></tr></table>");
+        resp.write("<tr><img src="+flipkart.img+ "></tr>");
+        resp.write("<hr><hr>")
+        resp.write("<table><tr><h5> " +ideakart.prodname + "</h5></tr>")
+    
+        resp.write("<tr><h5> " + ideakart.link+"</h5> </tr>");
+    
+        resp.write("<tr><img src="+ideakart.img+ "></tr></table>");
     
      
      resp.write("</table> ")
