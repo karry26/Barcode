@@ -22,7 +22,6 @@ var options = {
     .then((html)=>{
             let $=cheerio.load(html.data)
             var s_link=$('section.search-section').find('a').attr('href')
-            console.log(s_link);
             var img_link=$('section.search-section').find('img').attr('src')
             var prod_name=$('section.search-section').find('a')
         

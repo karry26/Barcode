@@ -19,13 +19,12 @@ app.get("/",(req,resp)=>
         flipkart= require("./scrappers/flipkart")
         ideakart=require("./scrappers/ideakart")
         amazon=await amazon.fetch(qrcode)
-        console.log("amazon done");
         product.amazon=amazon; 
-        //console.log(1)
+      
         flipkart=await flipkart.fetch(qrcode)
         product.flipkart=flipkart;
         ideakart=await ideakart.fetch(qrcode);
-        console.log("flipkart done")
+    
         product.ideakart=ideakart;
         module.exports.product=product;
         resp.setHeader("content-type","text/html")
