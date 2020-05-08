@@ -9,45 +9,89 @@ var app=express.Router();
 //9788126598328 book
 app.get("/",(req,resp)=>
 {
-    //var qrcode='8901207019005'
-    var qrcode=req.query.qrcode
-
-var options = {
-        url: 'https://www.amazon.in/s?k='+qrcode,
-        method: 'GET',
-    //    proxy: 'http://10.8.0.1:8080',
-        headers: {
-            'Connection': 'keep-alive',
-            'Accept': '*/*',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.114 Safari/537.36'
+    var amazon;
+    var flipkart;
+    async function solve ()
+        {
+        var qrcode=req.query.qrcode;
+        amazon=  require("./scrappers/amazon")
+        flipkart= require("./scrappers/flipkart")
+        amazon=await amazon.fetch(qrcode)
+        console.log("amazon done"); 
+        //console.log(1)
+        flipkart=await flipkart.fetch(qrcode)
+        module.exports.object=amazon;
+        console.log("flipkart done")
+        resp.setHeader("content-type","text/html")
+  
+        resp.write("<table><tr><h3> " +amazon.prodname + "</h3></tr>")
+        
+        resp.write("<tr><h3> " + amazon.link+"</h3> </tr>");
+    
+        resp.write("<tr><img src="+amazon.img+ "></tr></table>");
+        resp.write("<hr><hr>")
+        resp.write("<table><tr><h3> " +flipkart.prodname + "</h3></tr>")
+    
+        resp.write("<tr><h3> " + flipkart.link+"</h3> </tr>");
+    
+        resp.write("<tr><img src="+flipkart.img+ "></tr></table>");
+    
+     
+     resp.write("</table> ")
+        
+        resp.end();
         }
-    };
+        /*
+    async function display()
+    {
+        
+         await solve()
+         .then((response)=>{
+           //  resp.write(amazon)
+         console.log(1);
+         resp.sendFile("C:/Users/KArry/Desktop/Barcode/public/displayprod.html");
+             
+           // resp.setHeader("content-type","text/html");
+    /*
+            resp.write("<table><tr><h3> " +amazon.prodname + "</h3></tr>")
+        
+            resp.write("<tr><h3> " + amazon.link+"</h3> </tr>");
+        
+            resp.write("<tr><img src="+amazon.img+ "></tr></table>");
+            resp.write("<hr><hr>")
+            resp.write("<table><tr><h3> " +flipkart.prodname + "</h3></tr>")
+        
+            resp.write("<tr><h3> " + flipkart.link+"</h3> </tr>");
+        
+            resp.write("<tr><img src="+flipkart.img+ "></tr></table>");
+        
+         
+         resp.write("</table> ")
 
-    request(options, function (error, response, html) {
-       if (!error && response.statusCode == 200) {
-              var $=cheerio.load(html)
-              const stuff=$('div.s-result-list.s-search-results.sg-row')
-              var s_link=$('div[data-index="0"]').find('a.a-link-normal.a-text-normal').attr('href')
-            
-              s_link="https://www.amazon.in/"+s_link;
-              var img_link=$('div[data-index="0"]').find('img').attr('src')
-              var prod_name=$('div[data-index="0"]').find('span.a-size-medium.a-color-base.a-text-normal')
-              resp.setHeader("content-type","text/html");
-                prod_name=prod_name.html();
-               
-            
-                 resp.write("<table><tr><h3> " + prod_name + "</h3></tr>")
+         })
+         
+         
+            console.log('my display');
+            console.log(amazon.prodname);
+            // console.log(response);
 
-                resp.write("<tr><h3> " + s_link+"</h3> </tr>");
-            
-              resp.write("<tr><img src="+img_link+ "></tr></table>");
           
-              resp.write("</table> ")
-              //console.log( prod_name)
-              //console.log(s_link);
-              //console.log(img_link);
-       }
+        
+         
+
+    
+       // console.log(amazon);
+    
+      
+    
+        
+                    
+  
+    }
+    */
+    solve();
+  //  resp.end();
 });
-})
-module.exports=app;
+
+module.exports.app=app;
 
