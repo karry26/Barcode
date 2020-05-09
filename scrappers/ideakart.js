@@ -12,7 +12,7 @@ var options = {
         method: 'GET',
     //    proxy: 'http://10.8.0.1:8080',
         headers: {
-         //   'Connection': 'keep-alive',
+           'Connection': 'keep-alive',
             'Accept': '*/*',
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.114 Safari/537.36'
         }
