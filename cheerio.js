@@ -9,6 +9,7 @@ var app=express.Router();
 //9788126598328 book
 app.get("/",(req,resp)=>
 {
+
     var amazon;
     var flipkart;
     async function solve ()
@@ -27,10 +28,14 @@ app.get("/",(req,resp)=>
     
         product.ideakart=ideakart;
         module.exports.product=product;
-        resp.setHeader("content-type","text/html")
+        //product=JSON.parse(JSON.stringify(product))
+       // console.log(typeof product)
+        resp.send(product)
+        //resp.setHeader("content-type","text/html")
+
      //   resp.sendFile("C:/Users/KArry/Desktop/Barcode/public/displayprod.html");
         //resp.end(JSON.stringify(product));
-        
+        /*
         resp.write("<table><tr><h5> " +amazon.prodname + "</h5></tr>")
         
         resp.write("<tr><h5> " + amazon.link+"</h5> </tr>");
@@ -51,8 +56,8 @@ app.get("/",(req,resp)=>
     
      
      resp.write("</table> ")
-        
-        resp.end();
+        */
+       // resp.end();
         }
         /*
     async function display()

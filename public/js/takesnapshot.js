@@ -1,4 +1,5 @@
-(function() {
+var localstream;
+function letgo () {
   // The width and height of the captured photo. We will set the
   // width to the value defined here, but the height will be
   // calculated based on the aspect ratio of the input stream.
@@ -23,10 +24,11 @@
     video = document.getElementById('video');
     canvas = document.getElementById('canvas');
     photo = document.getElementById('prev1');
-    startbutton = document.getElementById('startbutton');
+    startbutton = document.getElementById('click');
 
     navigator.mediaDevices.getUserMedia({video: true, audio: false})
     .then(function(stream) {
+      localstream=stream;
       video.srcObject = stream;
       video.play();
     })
@@ -35,7 +37,7 @@
     });
 
     video.addEventListener('canplay', function(ev){
-      if (!streaming) {
+      if (!streaming ) {
         height = video.videoHeight / (video.videoWidth/width);
       
         // Firefox currently has a bug where the height can't be read from
@@ -58,7 +60,7 @@
       ev.preventDefault();
     }, false);
     
-    clearphoto();
+ //   clearphoto();
   }
 
   // Fill the photo with an indication that none has been
@@ -96,4 +98,13 @@
   // Set up our event listener to run the startup process
   // once loading is complete.
   window.addEventListener('load', startup, false);
-})();
+}
+//letgo();
+
+//var startbutton=document.getElementById("startbutton")
+//startbutton.onclick=letgo();
+/*
+startbutton.addEventListener('click', function(ev){
+  letgo();
+  ev.preventDefault();
+}, false);*/

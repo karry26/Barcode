@@ -4,10 +4,86 @@
 	<title>
 
 	</title>
+	
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+	
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<link rel="stylesheet" href="css/bootstrap.css">
+<!-- Latest compiled JavaScript -->
+<script src="js/bootstrap.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		var url=document.location.href
+		params=url.split('?')[1]
+		var qrcode=params.split('=')[1]
+		loadstates();
+	function loadstates() {
+		//  alert(1);
+		$.getJSON("/../cheerio.js?qrcode="+qrcode, function(jsonAry) {
+			//  alert(2);
+		var length=Object.keys(jsonAry).length;
+		var index=[];
+		for(var x in jsonAry)
+		{
+			index.push(x);
+		}
+		alert(JSON.stringify(jsonAry))
+			
+			for (var i=0;i<length;i++ ) {
+		
+				
+				var item = document.createElement("tr");
+				var thead=document.createElement("th");
+				thead.scope="row";
+				item.append(thead);
+				var name=document.createElement("td");
+				var img=document.createElement("img");
+				img.src=jsonAry[index[i]].img;
+				img.height=150;img.width=150
+				name.append(img)
+				item.append(name)
+				var name1=document.createElement("td");
+				name1.innerHTML=jsonAry[index[i]].prodname;
+				item.append(name1)
+				/*
+				name1.innerHTML=jsonAry[index[i]].link;
+				item.append(name1)*/
+			//	name.innerHTML=jsonAry[index[i]].img;
+				
+				
+				//console.log(item)
+				//item.value = jsonAry[i].state;
+				document.getElementById("table").append(item);
+			}
+		
+		});
+	}
+});
+</script>
 </head>
 <body>
 	<script type="text/javascript " src=""></script>
-wow yeheh
 
+<p id="para"></p>
+<div id="div1" class="container">
+<table class="table table-dark table-striped">
+	<thead >
+	  <tr>
+		<th scope="col">#</th>
+		<th scope="col">First</th>
+		<th scope="col">Last</th>
+		<th scope="col">Handle</th>
+	  </tr>
+	</thead>
+	<tbody id="table">
+	 
+	  
+	</tbody>
+  </table>
+</div>
 </body>
 </html>

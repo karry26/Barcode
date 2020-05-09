@@ -31,11 +31,13 @@ var app=express.Router();
           
             const stuff = $('div.s-result-list.s-search-results.sg-row');
     
-            var s_link = $('div[data-index="0"]').find('a.a-link-normal.a-text-normal').attr('href');
+            var s_link = $('div.s-result-list.s-search-results.sg-row').find('div[data-index="0"]').find('a.a-link-normal.a-text-normal').attr('href');
             s_link = "https://www.amazon.in" + s_link;
+            //var slink=$('div.s-result-list.s-search-results.sg-row').find('div[data-index="0"]')
+            //console.log(slink.html())
             
-            var img_link = $('div[data-index="0"]').find('img').attr('src');
-            var prod_name = $('div[data-index="0"]').find('span.a-size-medium.a-color-base.a-text-normal');
+            var img_link = $('div.s-result-list.s-search-results.sg-row').find('div[data-index="0"]').find('img.s-image').attr('src');
+            var prod_name = $('div.s-result-list.s-search-results.sg-row').find('div[data-index="0"]').find('span.a-size-medium.a-color-base.a-text-normal');
             prod_name = prod_name.html();
             obj.prodname = prod_name;
             obj.link = s_link;
