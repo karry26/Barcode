@@ -23,56 +23,46 @@
 </head>
 
 <body>
-    <div>
-    <video id="video" style="align-items:flex-end;" style="display: none;">Video stream not available.</video>
-    <main class="wrapper">
-       
-        <center>
-            <div>
-                <h1> SCAN BARCODE </h1>
-            </div>
-
-            <div class="row">
-                <input type="file" id="file" onchange="showpreview(this,prev1)"/>
-                <label for="file" class="btn-2">Upload Picture</label>
-                <input type="file" id="camera" value="11" accept="image/*" capture="camera">
-                <label for="camera" class="btn-2">Click Picture</label>
-               
-            </div>
-            <div>
-                <span >**Click Picture works only in phone</span>
-            </div>
+    <div class="container">
+        <main class="wrapper">
+           
+            <center>
                 <div>
-               
-
+                    <h1> SCAN BARCODE </h1>
                 </div>
-            <div class="preview">
-                <img id="prev1" src="./uploads/scan.png" width="300" height="300" alt="" style="border: 1px solid gray">
-            </div>
 
-            <div>
-                <button id="decodeButton">Decode</button>
-             
-                <canvas id="canvas" style="display: none;"></canvas>
-            </div>
+                <div class="row">
+                    <input type="file" id="file" onchange="showpreview(this,prev1)"/>
+                    <label for="file" class="btn-2">Upload Picture</label>
+                    <input type="file" id="camera" value="11" accept="image/*" capture="camera">
+                    <label for="camera" class="btn-2">Click Picture</label>
+                   
+                </div>
+                <div>
+                    <p align="right" style="font-size: 12px;"><b>**Click Picture works only in phone</b></p>
+                </div>
+                    
+                <div class="preview">
+                    <img id="prev1" src="./uploads/scan.png" width="300" height="300" alt="" style="border: 1px solid gray">
+                </div>
 
-            <div>
-            	<pre><code id='result'></code></pre>
-            </div>
-            <div>
-                <label>Result:</label> 
-                <pre><code id="result"></code></pre>
-            </div>
+                <div>
+                    <button id="decodeButton">Decode</button>
+                </div>
 
-    </center>
+                <div>
+                	<pre><code id='result'></code></pre>
+                </div>
 
-        <hr>
-        <footer class="footer">
-            <p> Contribute at <a href='https://github.com/karry26/Barcode'>Github</a></p>
-        </footer>
+        </center>
 
-    </main>
-</div>
+            <hr class="foot">
+            <footer class="footer">
+                <p> Contribute at <a href='https://github.com/karry26/Barcode'>Github</a></p>
+            </footer>
+
+        </main>
+    </div>
 
 
 <!-- Javascript -->

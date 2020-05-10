@@ -77,6 +77,15 @@ body {
   width: 100%;
 }
 
+.wrapper_result {
+  background-color: #fff;
+  border-radius: 1rem;
+  margin: 50px auto;
+  max-width: 1800px;
+  padding: 2rem;
+  width: 100%;
+}
+
 .footer {
   font-size: 30px;
   margin-bottom: 0;
@@ -84,7 +93,11 @@ body {
   align-self: center;
 }
 
-h1,
+h1{
+  font-size: 30px;
+  font-weight: bold;
+  font-family: Times New Roman;
+}
 p {
   margin-bottom: 2rem;
 }
@@ -97,4 +110,8 @@ h1 {
 a {
   color: #31c1ef;
   text-decoration: none;
+}
+
+hr.foot{
+  border: 2px solid black;
 }
