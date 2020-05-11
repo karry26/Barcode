@@ -19,14 +19,19 @@ app.get("/",(req,resp)=>
         amazon=  require("./scrappers/amazon")
         flipkart= require("./scrappers/flipkart")
         ideakart=require("./scrappers/ideakart")
+        ebay=require("./scrappers/ebay")
         amazon=await amazon.fetch(qrcode)
         product.amazon=amazon; 
       
         flipkart=await flipkart.fetch(qrcode)
         product.flipkart=flipkart;
+
         ideakart=await ideakart.fetch(qrcode);
-    
         product.ideakart=ideakart;
+
+        ebay=await ebay.fetch(qrcode);
+        product.ebay=ebay;
+        
         module.exports.product=product;
         //product=JSON.parse(JSON.stringify(product))
        // console.log(typeof product)
