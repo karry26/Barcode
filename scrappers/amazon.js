@@ -38,10 +38,13 @@ var app=express.Router();
             
             var img_link = $('div.s-result-list.s-search-results.sg-row').find('div[data-index="0"]').find('img.s-image').attr('src');
             var prod_name = $('div.s-result-list.s-search-results.sg-row').find('div[data-index="0"]').find('span.a-size-medium.a-color-base.a-text-normal');
+            var price=$('div.s-result-list.s-search-results.sg-row').find('div[data-index="0"]').find('span.a-price-whole').html();
             prod_name = prod_name.html();
             obj.prodname = prod_name;
             obj.link = s_link;
             obj.img = img_link;
+            obj.price= parseInt(price);
+           
  
 
         })

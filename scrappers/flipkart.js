@@ -31,11 +31,15 @@ var options = {
               s_link="https://www.flipkart.com"+s_link;
               var img_link=$('div._3liAhj').find('img').attr('src')
               var prod_name=$('div._3liAhj').find('a._2cLu-l')
-        
+              var price=$('div._3liAhj').find('div._1vC4OE').text()
+              price=price.split('₹')
+              price=price[1];
+             
                 prod_name=prod_name.html();
                 obj.prodname=prod_name;
                 obj.link=s_link;
                 obj.img=img_link;
+                obj.price=price;
              
                
             

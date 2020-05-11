@@ -25,7 +25,7 @@ app.get("/",(req,resp)=>
       
         flipkart=await flipkart.fetch(qrcode)
         product.flipkart=flipkart;
-
+         
         ideakart=await ideakart.fetch(qrcode);
         product.ideakart=ideakart;
 
