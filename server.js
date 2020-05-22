@@ -1,9 +1,9 @@
-var express=require("express")
-var path=require("path")
-var app=express()
+var express = require("express")
+var path = require("path")
+var app = express()
 var session = require("express-session");
-var bodyparser= require("body-parser");
-app.set('view engine', 'ejs'); 
+var bodyparser = require("body-parser");
+app.set('view engine', 'ejs');
 const SESS_name = "sid";
 app.use(session({
     name: SESS_name,
@@ -46,7 +46,9 @@ const redirectHome = (req, res, next) => {
         next();
     }
 }
-app.use(bodyparser.urlencoded({"extended":true}));
+app.use(bodyparser.urlencoded({
+    "extended": true
+}));
 
 app.use(express.static("public"))
 app.use((req, res, next) => {
@@ -64,18 +66,22 @@ app.get('/', (req, res) => {
     const {
         userid
     } = req.session;
-    var bool="false";
-    if(userid) bool="true";
-    res.render("index1",{bool:bool})
-  
+    var bool = "false";
+    if (userid) bool = "true";
+    res.render("index1", {
+        bool: bool
+    })
+
 })
 app.get('/home', redirectLogin, (req, res) => {
     const {
         user
     } = res.locals;
-    var filePath=path.join(__dirname,"public","home.html");
-    res.render("home",{user:res.locals.user});
-   
+    var filePath = path.join(__dirname, "public", "home.html");
+    res.render("home", {
+        user: res.locals.user
+    });
+
 })
 
 
@@ -88,7 +94,7 @@ app.get('/register', redirectHome, (req, res) => {
     res.render("register")
 })
 
-app.get('/profile',(req,res)=>{
+app.get('/profile', (req, res) => {
     res.render("profile");
 })
 
@@ -146,17 +152,16 @@ app.post('/logout', redirectLogin, (req, res) => {
 
 })
 
-app.get("/scan",redirectLogin,function(req,res)
-{
-    var filePath=path.join(__dirname,"public","scan.html");
+app.get("/scan", redirectLogin, function (req, res) {
+    var filePath = path.join(__dirname, "public", "scan.html");
     res.sendFile(filePath);
 })
-var scrapper=require("./cheerio.js")
-app.use("/cheerio.js",scrapper.app)
-app.use((req,res,next)=>{
+var scrapper = require("./cheerio.js")
+app.use("/cheerio.js", scrapper.app)
+app.use((req, res, next) => {
     res.status(404).send("<h1>Page not found-invalid url");
 });
-app.listen(8082,function(){
+app.listen(8081, function () {
     console.log("server started at 8081")
 
 });
