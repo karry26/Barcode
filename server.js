@@ -3,6 +3,12 @@ var path = require("path")
 var app = express()
 var session = require("express-session");
 var bodyparser = require("body-parser");
+var multer = require("multer");
+
+var {
+    db
+} = require("./config/database")
+var usersCol = require("./models/users")
 app.set('view engine', 'ejs');
 const SESS_name = "sid";
 app.use(session({
@@ -12,25 +18,18 @@ app.use(session({
     secret: "shhshh",
     cookie: {}
 }));
-var users = [{
-        id: 1,
-        name: 'Kairav',
-        email: 'kairavbansal@gmail.com',
-        password: 'secret'
+app.use(express.static("public"))
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/uploads');
     },
-    {
-        id: 2,
-        name: 'Khyati',
-        email: 'khyati@gmail.com',
-        password: 'secret'
-    },
-    {
-        id: 3,
-        name: 'Arshita',
-        email: 'arshita@gmail.com',
-        password: 'secret'
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + "-" + file.originalname);
     }
-]
+});
+var upload = multer({
+    storage: storage
+});
 
 const redirectLogin = (req, res, next) => {
     if (!req.session.userid) {
@@ -50,17 +49,37 @@ app.use(bodyparser.urlencoded({
     "extended": true
 }));
 
-app.use(express.static("public"))
+
 app.use((req, res, next) => {
     const {
         userid
     } = req.session
     if (userid) {
-        res.locals.user = users.find(
-            user => user.id === userid
-        )
-    }
-    next();
+        async function set(req, res) {
+            await usersCol.findOne({
+                    email: userid
+                })
+                .then(function (result) {
+
+                    if (result) {
+                        res.locals.user = result;
+
+                    }
+
+
+                })
+                .catch(function (msg) {
+                    res.send({
+                        err: msg
+                    });
+                });
+            next();
+        }
+        set(req, res);
+
+    } else
+        next();
+
 })
 app.get('/', (req, res) => {
     const {
@@ -77,7 +96,6 @@ app.get('/home', redirectLogin, (req, res) => {
     const {
         user
     } = res.locals;
-    var filePath = path.join(__dirname, "public", "home.html");
     res.render("home", {
         user: res.locals.user
     });
@@ -87,15 +105,52 @@ app.get('/home', redirectLogin, (req, res) => {
 
 
 app.get('/login', redirectHome, (req, res) => {
-    res.render("login")
+  
+    res.render("login", {
+        error: ""
+    })
 })
 
 app.get('/register', redirectHome, (req, res) => {
-    res.render("register")
+    res.render("register", {
+        error: ""
+    })
 })
 
-app.get('/profile', (req, res) => {
-    res.render("profile");
+app.get('/profile', redirectLogin, (req, res) => {
+    res.render("profile", {
+        user: res.locals.user
+    });
+})
+app.post("/profile", redirectLogin, upload.single('pic'), (req, res) => {
+    if (req.file) {
+        req.body.pic = req.file.filename;
+    } else {
+        req.body.pic = req.body.hdn;
+    }
+    usersCol.findOneAndUpdate({
+        email: req.body.email
+    }, {
+        $set: {
+            mobile: req.body.mobile,
+
+            pic: req.body.pic,
+            occupation: req.body.occupation,
+            address: req.body.address,
+            dob: req.body.dob,
+            city: req.body.city
+        }
+    }, {
+        new: true
+    }).then((docs) => {
+        if (docs) {
+
+            res.redirect("profile");
+        } else {
+            res.send("Error Occured");
+        }
+    })
+
 })
 
 app.post('/login', redirectHome, (req, res) => {
@@ -104,13 +159,26 @@ app.post('/login', redirectHome, (req, res) => {
         password
     } = req.body;
     if (email && password) {
-        const user = users.find(user => user.email === email && user.password === password)
-        if (user) {
-            req.session.userid = user.id;
-            return res.redirect('/home')
-        }
-    }
-    res.redirect('/login');
+        usersCol.findOne({
+                email: email
+            })
+            .then(function (result) {
+
+                if (result) {
+                    req.session.userid = email;
+                    res.redirect('/home')
+                } else
+                    return res.redirect('/login');
+
+            })
+            .catch(function (msg) {
+                console.log(msg)
+            });
+
+    } else
+        res.render('login', {
+            error: "Please Fill Details Properly"
+        });
 
 })
 app.post('/register', redirectHome, (req, res) => {
@@ -119,26 +187,39 @@ app.post('/register', redirectHome, (req, res) => {
         email,
         password
     } = req.body;
-
     if (name && email && password) {
-        const exists = users.some(
-            user => user.email === email
-        )
-        if (!exists) {
-            const user = {
-                id: users.length + 1,
-                name,
-                email,
-                password
-            }
-            users.push(user);
-            req.session.userid = user.id
+        usersCol.findOne({
+                email: email
+            })
+            .then((data) => {
+                if (data) {
+                    console.log("user exist")
+                    return res.render("register", {
+                        error: "USER ALREADY EXISTS"
+                    });
+                }
+                req.body.pic = "book.png";
+                var collection = new usersCol(req.body);
 
-            return res.redirect('/home');
-        }
-    }
+             
+               
+                collection.save(function (err, doc) {
+                    if (err)
+                        console.log(err)
+                  
+                    req.session.userid = email;
+                    res.redirect('/home')
 
-    res.redirect('/register');
+
+                });
+
+
+
+            })
+    } else
+        res.render("register", {
+            error: "Please Fill Details Properly"
+        })
 
 })
 app.post('/logout', redirectLogin, (req, res) => {
