@@ -7,3 +7,4 @@ var db=mongoose.connect("mongodb+srv://karry26:karry26@cluster0-fi1yu.gcp.mongod
     console.log(err);
 });
 module.exports.db=db;
+
