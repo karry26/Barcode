@@ -198,7 +198,7 @@ app.post('/register', redirectHome, (req, res) => {
                         error: "USER ALREADY EXISTS"
                     });
                 }
-                req.body.pic = "book.png";
+                req.body.pic = "user.png";
                 var collection = new usersCol(req.body);
 
              
